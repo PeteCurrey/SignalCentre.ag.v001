@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { MOCK_SIGNAL_DETAIL, MOCK_SIGNALS } from "@/lib/data/mock-signals";
 import { getRiskGradeLabel, getRelativeTime } from "@/lib/utils";
 import type { AIModel, Direction } from "@/lib/types";
+import { getSignalDetail } from "@/lib/data/signals";
 
 type Params = Promise<{ instrument: string }>;
 
@@ -36,11 +36,11 @@ function AIModelPanel({
   keyPoints: string[];
   concerns?: string[];
 }) {
-  const modelColors: Record<AIModel, string> = {
+  const modelColors: Record<string, string> = {
     CLAUDE: "var(--burgundy)",
     GPT: "var(--navy)",
     GROK: "var(--green)",
-    GEMINI: "var(--amber)",
+    GEMINI: "var(--amber)", // Fallback if still present in old data
   };
   const biasColors: Record<Direction, string> = {
     BULLISH: "var(--green)",
@@ -54,7 +54,7 @@ function AIModelPanel({
         borderRight: "1px solid var(--border)",
         borderBottom: "1px solid var(--border)",
         padding: "var(--space-6)",
-        borderTop: `2px solid ${modelColors[model]}`,
+        borderTop: `2px solid ${modelColors[model] || "var(--navy)"}`,
       }}
     >
       {/* Model header */}
@@ -72,7 +72,7 @@ function AIModelPanel({
               fontFamily: "var(--font-mono)",
               fontSize: "0.8125rem",
               fontWeight: 600,
-              color: modelColors[model],
+              color: modelColors[model] || "var(--navy)",
               letterSpacing: "0.06em",
               marginBottom: "2px",
             }}
@@ -184,7 +184,7 @@ function AIModelPanel({
                 lineHeight: 1.5,
               }}
             >
-              <span style={{ color: modelColors[model], flexShrink: 0 }}>—</span>
+              <span style={{ color: modelColors[model] || "var(--navy)", flexShrink: 0 }}>—</span>
               {point}
             </li>
           ))}
@@ -316,13 +316,17 @@ function ConfluenceRow({
   );
 }
 
+export const revalidate = 0;
+
 export default async function SignalDetailPage({ params }: { params: Params }) {
   const { instrument } = await params;
+  const signal = await getSignalDetail(instrument);
 
-  // Use GBP/JPY detail for all instruments as demo
-  const signal = MOCK_SIGNAL_DETAIL;
+  if (!signal) {
+    notFound();
+  }
 
-  const instrumentName = instrument.replace(/-/g, "/").toUpperCase();
+  const instrumentName = signal.instrument;
 
   // Consensus agreement calculation
   const bullishCount = signal.aiResponses.filter((r) => r.bias === "BULLISH").length;

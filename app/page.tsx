@@ -4,10 +4,10 @@ import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { LiveFeedTable } from "@/components/feed/LiveFeedTable";
 import {
-  MOCK_SIGNALS,
   PRICING_TIERS,
   ASSET_COVERAGE,
-} from "@/lib/data/mock-signals";
+  getActiveSignals,
+} from "@/lib/data/signals";
 
 export const metadata: Metadata = {
   title: "Signal Center — Institutional Market Intelligence",
@@ -69,7 +69,10 @@ const CONSENSUS_MODELS = [
   },
 ];
 
-export default function HomePage() {
+export const revalidate = 0;
+
+export default async function HomePage() {
+  const signals = await getActiveSignals();
   return (
     <>
       <Header />
@@ -123,7 +126,7 @@ export default function HomePage() {
                     fontFamily: "var(--font-mono)",
                   }}
                 >
-                  Live Intelligence Feed · {MOCK_SIGNALS.length} instruments active
+                  Live Intelligence Feed · {signals.length} instruments active
                 </span>
               </div>
 
@@ -315,7 +318,7 @@ export default function HomePage() {
               </div>
             </div>
 
-            <LiveFeedTable signals={MOCK_SIGNALS} isPublic showFilters />
+            <LiveFeedTable signals={signals} isPublic showFilters />
           </div>
         </section>
 

@@ -1,11 +1,13 @@
 import type { Metadata } from "next";
 import { LiveFeedTable } from "@/components/feed/LiveFeedTable";
-import { MOCK_SIGNALS } from "@/lib/data/mock-signals";
+import { getActiveSignals } from "@/lib/data/signals";
 
 export const metadata: Metadata = { title: "Forex Intelligence" };
 
-export default function ForexPage() {
-  const signals = MOCK_SIGNALS.filter((s) => s.assetClass === "FOREX");
+export const revalidate = 0;
+
+export default async function ForexPage() {
+  const signals = await getActiveSignals("FOREX");
   return (
     <div style={{ padding: "var(--space-8) var(--space-10)" }}>
       <div style={{ marginBottom: "var(--space-6)", paddingBottom: "var(--space-6)", borderBottom: "1px solid var(--border)" }}>

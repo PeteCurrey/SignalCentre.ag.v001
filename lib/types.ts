@@ -5,8 +5,8 @@
 export type AssetClass = "FOREX" | "INDICES" | "COMMODITIES" | "CRYPTO";
 export type Direction = "BULLISH" | "BEARISH" | "NEUTRAL";
 export type RiskGrade = "A_PLUS" | "A" | "B" | "C" | "D";
-export type AIModel = "CLAUDE" | "GPT" | "GROK" | "GEMINI";
-export type SubscriptionTier = "PROFESSIONAL" | "PRO_DESK" | "INSTITUTIONAL";
+export type AIModel = "CLAUDE" | "GPT" | "GROK";
+export type SubscriptionTier = "FOUNDATION" | "EDGE" | "FLOOR";
 
 export interface Signal {
   id: string;

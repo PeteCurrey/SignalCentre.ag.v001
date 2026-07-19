@@ -1,17 +1,52 @@
 import type { Metadata } from "next";
-import { MOCK_SIGNALS } from "@/lib/data/mock-signals";
+import { createServerClient, isSupabaseConfigured } from "@/lib/supabase/client";
 
 export const metadata: Metadata = { title: "Performance" };
+export const revalidate = 0;
 
-// Generate mock historical performance data
-const PERFORMANCE_DATA = [
-  { period: "Jun 2026", totalSignals: 48, highConviction: 18, grade_a: 14, grade_b: 22, grade_c: 12 },
-  { period: "May 2026", totalSignals: 52, highConviction: 21, grade_a: 16, grade_b: 24, grade_c: 12 },
-  { period: "Apr 2026", totalSignals: 44, highConviction: 16, grade_a: 12, grade_b: 20, grade_c: 12 },
-  { period: "Mar 2026", totalSignals: 61, highConviction: 24, grade_a: 18, grade_b: 28, grade_c: 15 },
-];
+export default async function PerformancePage() {
+  let signals: any[] = [];
+  
+  if (isSupabaseConfigured()) {
+    try {
+      const db = createServerClient();
+      const { data } = await db.from("signals").select("created_at, conviction, risk_grade");
+      if (data) signals = data;
+    } catch (e) {
+      console.error("Failed to fetch performance data", e);
+    }
+  }
 
-export default function PerformancePage() {
+  // Group by month
+  const grouped: Record<string, any> = {};
+  for (const s of signals) {
+    if (!s.created_at) continue;
+    const date = new Date(s.created_at);
+    const period = date.toLocaleString('default', { month: 'short', year: 'numeric' });
+    
+    if (!grouped[period]) {
+      grouped[period] = {
+        period,
+        totalSignals: 0,
+        highConviction: 0,
+        grade_a: 0,
+        grade_b: 0,
+        grade_c: 0,
+      };
+    }
+    
+    grouped[period].totalSignals++;
+    if (s.conviction >= 70) grouped[period].highConviction++;
+    
+    if (s.risk_grade === 'A_PLUS' || s.risk_grade === 'A') grouped[period].grade_a++;
+    else if (s.risk_grade === 'B') grouped[period].grade_b++;
+    else if (s.risk_grade === 'C' || s.risk_grade === 'D') grouped[period].grade_c++;
+  }
+
+  const performanceData = Object.values(grouped).sort((a, b) => {
+    return new Date(b.period).getTime() - new Date(a.period).getTime();
+  });
+
   return (
     <div style={{ padding: "var(--space-8) var(--space-10)" }}>
       <div style={{ marginBottom: "var(--space-8)", paddingBottom: "var(--space-6)", borderBottom: "1px solid var(--border)" }}>
@@ -36,44 +71,50 @@ export default function PerformancePage() {
 
       {/* Historical table */}
       <div style={{ border: "1px solid var(--border)" }}>
-        <table className="data-table">
-          <thead>
-            <tr>
-              <th>Period</th>
-              <th>Total Signals</th>
-              <th>High Conviction (≥70)</th>
-              <th>Grade A / A+</th>
-              <th>Grade B</th>
-              <th>Grade C / D</th>
-            </tr>
-          </thead>
-          <tbody>
-            {PERFORMANCE_DATA.map((row) => (
-              <tr key={row.period}>
-                <td>
-                  <span style={{ fontFamily: "var(--font-mono)", fontWeight: 500 }}>
-                    {row.period}
-                  </span>
-                </td>
-                <td>
-                  <span style={{ fontFamily: "var(--font-mono)" }}>{row.totalSignals}</span>
-                </td>
-                <td>
-                  <span style={{ fontFamily: "var(--font-mono)", color: "var(--green)" }}>{row.highConviction}</span>
-                </td>
-                <td>
-                  <span style={{ fontFamily: "var(--font-mono)", color: "var(--green)" }}>{row.grade_a}</span>
-                </td>
-                <td>
-                  <span style={{ fontFamily: "var(--font-mono)", color: "var(--amber)" }}>{row.grade_b}</span>
-                </td>
-                <td>
-                  <span style={{ fontFamily: "var(--font-mono)", color: "var(--burgundy)" }}>{row.grade_c}</span>
-                </td>
+        {performanceData.length > 0 ? (
+          <table className="data-table">
+            <thead>
+              <tr>
+                <th>Period</th>
+                <th>Total Signals</th>
+                <th>High Conviction (≥70)</th>
+                <th>Grade A / A+</th>
+                <th>Grade B</th>
+                <th>Grade C / D</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {performanceData.map((row) => (
+                <tr key={row.period}>
+                  <td>
+                    <span style={{ fontFamily: "var(--font-mono)", fontWeight: 500 }}>
+                      {row.period}
+                    </span>
+                  </td>
+                  <td>
+                    <span style={{ fontFamily: "var(--font-mono)" }}>{row.totalSignals}</span>
+                  </td>
+                  <td>
+                    <span style={{ fontFamily: "var(--font-mono)", color: "var(--green)" }}>{row.highConviction}</span>
+                  </td>
+                  <td>
+                    <span style={{ fontFamily: "var(--font-mono)", color: "var(--green)" }}>{row.grade_a}</span>
+                  </td>
+                  <td>
+                    <span style={{ fontFamily: "var(--font-mono)", color: "var(--amber)" }}>{row.grade_b}</span>
+                  </td>
+                  <td>
+                    <span style={{ fontFamily: "var(--font-mono)", color: "var(--burgundy)" }}>{row.grade_c}</span>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        ) : (
+          <div style={{ padding: "var(--space-6)", textAlign: "center", color: "var(--text-muted)", fontSize: "0.8125rem" }}>
+            No historical performance data available yet.
+          </div>
+        )}
       </div>
     </div>
   );

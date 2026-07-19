@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
-import { PRICING_TIERS } from "@/lib/data/mock-signals";
+import { PRICING_TIERS } from "@/lib/data/signals";
 
 export const metadata: Metadata = {
   title: "Pricing",

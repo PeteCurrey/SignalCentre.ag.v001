@@ -1,13 +1,59 @@
 import type { Metadata } from "next";
 import { LiveFeedTable } from "@/components/feed/LiveFeedTable";
-import { MOCK_SIGNALS, MARKET_SUMMARY } from "@/lib/data/mock-signals";
+import { createServerClient, isSupabaseConfigured } from "@/lib/supabase/client";
+import { getLiveQuotes } from "@/lib/market-data";
 import { getRelativeTime } from "@/lib/utils";
+import { Signal } from "@/lib/types";
 
 export const metadata: Metadata = {
   title: "Live Intelligence Feed",
 };
 
-export default function LiveFeedPage() {
+export const revalidate = 0;
+
+export default async function LiveFeedPage() {
+  let signals: any[] = [];
+  
+  if (isSupabaseConfigured()) {
+    try {
+      const db = createServerClient();
+      const { data } = await db
+        .from("signals")
+        .select("*")
+        .order("created_at", { ascending: false });
+      if (data) signals = data;
+    } catch (e) {
+      console.error("Failed to fetch signals", e);
+    }
+  }
+
+  const activeSignals = signals.filter(s => s.outcome === "pending" || !s.outcome);
+  const symbols = Array.from(new Set(activeSignals.map(s => s.instrument)));
+  const quotes = await getLiveQuotes(symbols);
+
+  const mappedSignals: Signal[] = activeSignals.map(s => {
+    const q = quotes[s.instrument];
+    return {
+      id: s.id,
+      instrument: s.instrument,
+      assetClass: (s.asset_class?.toUpperCase() || "FOREX") as any,
+      direction: (s.direction?.toUpperCase() || "NEUTRAL") as any,
+      convictionScore: s.conviction || 0,
+      consensusScore: s.consensus_score || 0,
+      riskGrade: (s.risk_grade || "C") as any,
+      timeframe: s.timeframe || "1H",
+      sessionContext: s.session_context || "Active Session",
+      isActive: true,
+      timestamp: s.created_at || new Date().toISOString(),
+      price: q?.price,
+      priceChange: q?.change,
+      priceChangePct: q?.changePct,
+    };
+  });
+
+  const highConviction = mappedSignals.filter(s => s.convictionScore >= 70).length;
+  const aligned = mappedSignals.filter(s => s.consensusScore >= 70).length;
+
   return (
     <div style={{ padding: "var(--space-8) var(--space-10)" }}>
       {/* Page Header */}
@@ -33,8 +79,7 @@ export default function LiveFeedPage() {
             Live Intelligence Feed
           </h1>
           <p style={{ fontSize: "0.8125rem", color: "var(--text-muted)" }}>
-            {MOCK_SIGNALS.length} instruments · Last updated{" "}
-            {getRelativeTime(MARKET_SUMMARY.lastUpdated)}
+            {mappedSignals.length} instruments active · Last updated just now
           </p>
         </div>
 
@@ -69,7 +114,7 @@ export default function LiveFeedPage() {
                 color: "var(--green)",
               }}
             >
-              {MARKET_SUMMARY.highConviction}
+              {highConviction}
             </div>
           </div>
           <div
@@ -96,7 +141,7 @@ export default function LiveFeedPage() {
                 color: "var(--navy)",
               }}
             >
-              {MARKET_SUMMARY.consensusDistribution.aligned}
+              {aligned}
             </div>
           </div>
           <div
@@ -126,7 +171,7 @@ export default function LiveFeedPage() {
 
       {/* Full table with filters */}
       <div style={{ border: "1px solid var(--border)" }}>
-        <LiveFeedTable signals={MOCK_SIGNALS} showFilters isPublic={false} />
+        <LiveFeedTable signals={mappedSignals} showFilters isPublic={false} />
       </div>
 
       {/* Footer note */}

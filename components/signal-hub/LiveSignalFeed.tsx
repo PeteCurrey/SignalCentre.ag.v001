@@ -9,7 +9,6 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import Link from "next/link";
 import { isSupabaseConfigured, createBrowserClient } from "@/lib/supabase/client";
-import { MOCK_SIGNALS } from "@/lib/data/mock-signals";
 import { getRelativeTime, getRiskGradeLabel } from "@/lib/utils";
 import type { Signal } from "@/lib/types";
 
@@ -391,9 +390,8 @@ export function LiveSignalFeed({ onCountChange }: LiveSignalFeedProps) {
       } catch { /* fall through */ }
     }
 
-    const mock = MOCK_SIGNALS.filter((s) => s.isActive);
-    setSignals(mock);
-    onCountChange?.(mock.length);
+    setSignals([]);
+    onCountChange?.(0);
     setLastRefresh(new Date());
   }, [onCountChange]);
 
