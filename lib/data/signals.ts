@@ -53,12 +53,13 @@ export async function getSignalDetail(instrumentSlug: string): Promise<SignalDet
     try {
       const db = createServerClient();
       // First find all active signals, then filter by slug (easier than doing slug translation in SQL)
-      const { data } = await db.from("signals").select("*").in("outcome", ["pending", null]).order("created_at", { ascending: false });
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const { data } = await (db.from("signals").select("*").in("outcome", ["pending", null]).order("created_at", { ascending: false }) as any);
       if (data) {
         // Need to import toSlug here but since this is a server function, it's ok.
         // Or simply do a string comparison
         const targetSlug = instrumentSlug.toLowerCase();
-        signalData = data.find(s => s.instrument.toLowerCase().replace(/[\/\s_]+/g, "-") === targetSlug);
+        signalData = data.find((s: any) => s.instrument.toLowerCase().replace(/[\/\s_]+/g, "-") === targetSlug);
       }
     } catch (e) {
       console.error("Failed to fetch signal detail", e);

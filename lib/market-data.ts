@@ -54,11 +54,11 @@ export async function getLiveQuotes(symbols: string[]): Promise<BatchQuoteRespon
   if (isSupabaseConfigured()) {
     try {
       const db = createServiceClient();
-      const { data } = await db
+      const { data } = await (db
         .from("api_cache")
         .select("value, fetched_at")
         .eq("key", cacheKey)
-        .single();
+        .single() as any);
         
       if (data) {
         const age = (Date.now() - new Date(data.fetched_at).getTime()) / 1000;
