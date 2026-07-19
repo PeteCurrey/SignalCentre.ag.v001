@@ -76,7 +76,8 @@ export async function GET(request: Request) {
       
       const expiresAt = new Date(Date.now() + 12 * 60 * 60 * 1000); // +12h
 
-      const { data, error } = await db.from('signals').insert({
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const { data, error } = await (db.from('signals') as any).insert({
         instrument,
         asset_class: ASSET_COVERAGE.find(c => c.instruments.includes(instrument))?.class || 'FOREX',
         direction,
@@ -95,7 +96,8 @@ export async function GET(request: Request) {
 
       if (error) throw error;
 
-      await db.from('scan_log').insert({
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      await (db.from('scan_log') as any).insert({
         instrument,
         status: 'success',
         models_responded: successful.length
@@ -104,7 +106,8 @@ export async function GET(request: Request) {
       results.push({ instrument, status: 'success' });
     } catch (e: any) {
       console.error(`Failed to scan ${instrument}:`, e);
-      await db.from('scan_log').insert({
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      await (db.from('scan_log') as any).insert({
         instrument,
         status: 'failure',
         models_responded: 0,
