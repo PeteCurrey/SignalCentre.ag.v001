@@ -149,7 +149,6 @@ export const PRICING_TIERS: import("@/lib/types").PricingTier[] = [
       "Direct Analyst Access",
       "API Access (Coming Soon)",
     ],
-    ],
     highlighted: false,
   },
 ];
