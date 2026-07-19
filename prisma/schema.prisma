@@ -1,0 +1,158 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ── User ────────────────────────────────────────────────────
+model User {
+  id        String   @id @default(cuid())
+  clerkId   String   @unique
+  email     String   @unique
+  name      String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  subscription Subscription?
+  alerts       Alert[]
+
+  @@map("users")
+}
+
+// ── Subscription ────────────────────────────────────────────
+model Subscription {
+  id           String             @id @default(cuid())
+  userId       String             @unique
+  user         User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tier         SubscriptionTier
+  stripeId     String?            @unique
+  status       SubscriptionStatus
+  validUntil   DateTime?
+  createdAt    DateTime           @default(now())
+  updatedAt    DateTime           @updatedAt
+
+  @@map("subscriptions")
+}
+
+enum SubscriptionTier {
+  PROFESSIONAL
+  PRO_DESK
+  INSTITUTIONAL
+}
+
+enum SubscriptionStatus {
+  ACTIVE
+  PAST_DUE
+  CANCELLED
+  TRIALING
+}
+
+// ── Signal ──────────────────────────────────────────────────
+model Signal {
+  id               String      @id @default(cuid())
+  instrument       String
+  assetClass       AssetClass
+  direction        Direction
+  convictionScore  Int         // 0–100
+  consensusScore   Int         // 0–100
+  riskGrade        RiskGrade
+  timeframe        String      // e.g. "H4", "D1"
+  sessionContext   String?     // e.g. "London Open", "NY Session"
+  isActive         Boolean     @default(true)
+  timestamp        DateTime    @default(now())
+  updatedAt        DateTime    @updatedAt
+
+  confluenceMatrix ConfluenceMatrix?
+  aiResponses      AIConsensusResponse[]
+
+  @@map("signals")
+}
+
+enum AssetClass {
+  FOREX
+  INDICES
+  COMMODITIES
+  CRYPTO
+}
+
+enum Direction {
+  BULLISH
+  BEARISH
+  NEUTRAL
+}
+
+enum RiskGrade {
+  A_PLUS
+  A
+  B
+  C
+  D
+}
+
+// ── Confluence Matrix ────────────────────────────────────────
+model ConfluenceMatrix {
+  id          String  @id @default(cuid())
+  signalId    String  @unique
+  signal      Signal  @relation(fields: [signalId], references: [id], onDelete: Cascade)
+
+  rsi         Float?
+  macd        Float?
+  emaAlignment Int?   // -2 to +2 representing strong bearish to strong bullish
+  atr         Float?
+  volume      Int?    // 0–100 relative volume score
+  sentiment   Int?    // 0–100
+  newsScore   Int?    // 0–100
+  macroScore  Int?    // 0–100
+
+  @@map("confluence_matrices")
+}
+
+// ── AI Consensus Response ────────────────────────────────────
+model AIConsensusResponse {
+  id         String    @id @default(cuid())
+  signalId   String
+  signal     Signal    @relation(fields: [signalId], references: [id], onDelete: Cascade)
+  model      AIModel
+  role       String    // e.g. "Risk Officer", "Portfolio Strategist"
+  bias       Direction
+  rationale  String    @db.Text
+  confidence Int       // 0–100
+  timestamp  DateTime  @default(now())
+
+  @@map("ai_consensus_responses")
+}
+
+enum AIModel {
+  CLAUDE
+  GPT
+  GROK
+  GEMINI
+}
+
+// ── Alert ────────────────────────────────────────────────────
+model Alert {
+  id           String    @id @default(cuid())
+  userId       String
+  user         User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  instrument   String
+  alertType    AlertType
+  threshold    Float?
+  triggered    Boolean   @default(false)
+  triggeredAt  DateTime?
+  createdAt    DateTime  @default(now())
+
+  @@map("alerts")
+}
+
+enum AlertType {
+  CONVICTION_THRESHOLD
+  DIRECTION_CHANGE
+  RISK_GRADE_CHANGE
+  CONSENSUS_SHIFT
+}

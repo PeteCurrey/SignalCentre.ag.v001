@@ -1,0 +1,17 @@
+
+> signal-centre@0.1.0 start
+> next start
+
+▲ Next.js 16.2.9
+- Local:         http://localhost:3005
+- Network:       http://192.168.0.101:3005
+✓ Ready in 291ms
+[WebPush] Failed to configure VAPID keys (likely invalid format). Push will be mocked. Error: Vapid public key should be 65 bytes long when decoded.
+    at Object.f [as validatePublicKey] (.next/server/chunks/[root-of-the-server]__1h1acal._.js:1:81445)
+    at c.setVapidDetails (.next/server/chunks/[root-of-the-server]__1h1acal._.js:4:1316)
+    at module evaluation (.next/server/chunks/[root-of-the-server]__1h1acal._.js:12:329)
+    at instantiateModule (.next/server/chunks/[turbopack]_runtime.js:853:9)
+    at instantiateRuntimeModule (.next/server/chunks/[turbopack]_runtime.js:882:12)
+    at getOrInstantiateRuntimeModule (.next/server/chunks/[turbopack]_runtime.js:895:12)
+    at Object.m (.next/server/chunks/[turbopack]_runtime.js:898:18)
+    at Object.<anonymous> (.next/server/app/api/cron/evaluate-alerts/route.js:7:3)

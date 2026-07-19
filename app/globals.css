@@ -1,0 +1,308 @@
+/* ── Google Fonts (must precede all other rules) ─────────── */
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=IBM+Plex+Mono:wght@300;400;500&display=swap");
+
+@import "tailwindcss";
+
+/* ============================================================
+   SIGNAL CENTER — DESIGN SYSTEM
+   Institutional Market Intelligence Platform
+   signalcenter.co.uk
+   ============================================================ */
+
+
+/* ── CSS Design Tokens ───────────────────────────────────── */
+:root {
+  /* Background */
+  --bg-base: #ffffff;
+  --bg-warm: #fafaf8;
+  --bg-stone: #f3f3f1;
+  --bg-subtle: #eeede9;
+
+  /* Typography */
+  --text-primary: #172436;
+  --text-secondary: #3e4b5c;
+  --text-muted: #738091;
+  --text-disabled: #b0b8c0;
+
+  /* Accent — used sparingly */
+  --navy: #234166;
+  --navy-light: #345c8f;
+  --navy-muted: #e8eff5;
+  --green: #2f5d50;
+  --green-light: #3b7063;
+  --green-bg: #f0f5f3;
+  --burgundy: #5b2c2c;
+  --burgundy-light: #7a3b3b;
+  --burgundy-bg: #f8f0f0;
+  --amber: #8b6914;
+  --amber-bg: #fdf6e3;
+  --platinum: #d9d9d6;
+  --platinum-light: #ebebea;
+
+  /* Borders */
+  --border: #e0dfdb;
+  --border-strong: #c8c7c3;
+  --border-navy: #23416620;
+
+  /* Typography Scale */
+  --font-sans: "IBM Plex Sans", system-ui, -apple-system, sans-serif;
+  --font-mono: "IBM Plex Mono", "Courier New", monospace;
+
+  /* Spacing Scale — strict, no deviation */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-10: 2.5rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+  --space-20: 5rem;
+  --space-24: 6rem;
+  --space-32: 8rem;
+
+  /* Motion — institutional, never playful */
+  --duration-fast: 100ms;
+  --duration-base: 150ms;
+  --duration-slow: 200ms;
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* Layout */
+  --max-width: 1440px;
+  --sidebar-width: 220px;
+  --header-height: 56px;
+  --content-padding: 2.5rem;
+}
+
+/* ── Global Reset ────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  font-family: var(--font-sans);
+  font-weight: 400;
+  color: var(--text-primary);
+  background-color: var(--bg-base);
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+/* ── Typography ──────────────────────────────────────────── */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-sans);
+  font-weight: 500;
+  line-height: 1.25;
+  letter-spacing: -0.015em;
+  color: var(--text-primary);
+}
+
+h1 { font-size: 2.25rem; }
+h2 { font-size: 1.5rem; }
+h3 { font-size: 1.125rem; }
+h4 { font-size: 1rem; font-weight: 500; }
+h5 { font-size: 0.875rem; font-weight: 500; }
+h6 { font-size: 0.8125rem; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; }
+
+p {
+  line-height: 1.7;
+  color: var(--text-secondary);
+}
+
+a {
+  color: var(--navy);
+  text-decoration: none;
+  transition: color var(--duration-base) var(--ease);
+}
+
+a:hover {
+  color: var(--navy-light);
+}
+
+/* ── Data / Numeric Typography ───────────────────────────── */
+.font-mono,
+[data-mono] {
+  font-family: var(--font-mono);
+  font-feature-settings: "tnum" 1;
+  letter-spacing: 0;
+}
+
+/* ── Utility Classes ─────────────────────────────────────── */
+.container {
+  width: 100%;
+  max-width: var(--max-width);
+  margin-inline: auto;
+  padding-inline: var(--space-8);
+}
+
+.container-narrow {
+  width: 100%;
+  max-width: 860px;
+  margin-inline: auto;
+  padding-inline: var(--space-8);
+}
+
+.section {
+  padding-block: var(--space-24);
+  border-top: 1px solid var(--border);
+}
+
+/* ── Score Colours ───────────────────────────────────────── */
+.score-high { color: var(--green); }
+.score-medium { color: var(--amber); }
+.score-low { color: var(--burgundy); }
+
+/* ── Direction Indicators ────────────────────────────────── */
+.direction-bullish { color: var(--green); }
+.direction-bearish { color: var(--burgundy); }
+.direction-neutral { color: var(--text-muted); }
+
+/* ── Risk Grade Colours ──────────────────────────────────── */
+.grade-a-plus { color: var(--green); font-weight: 600; }
+.grade-a      { color: var(--green-light); font-weight: 500; }
+.grade-b      { color: var(--amber); font-weight: 500; }
+.grade-c      { color: var(--burgundy-light); font-weight: 500; }
+.grade-d      { color: var(--burgundy); font-weight: 600; }
+
+/* ── Table Styles ────────────────────────────────────────── */
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+}
+
+.data-table thead {
+  border-bottom: 1px solid var(--border-strong);
+}
+
+.data-table th {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  padding: var(--space-3) var(--space-4);
+  text-align: left;
+  white-space: nowrap;
+}
+
+.data-table td {
+  padding: var(--space-3) var(--space-4);
+  border-bottom: 1px solid var(--border);
+  color: var(--text-primary);
+  vertical-align: middle;
+}
+
+.data-table tbody tr {
+  transition: background-color var(--duration-fast) var(--ease);
+  cursor: pointer;
+}
+
+.data-table tbody tr:hover {
+  background-color: var(--bg-warm);
+}
+
+.data-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* ── Score Bar ────────────────────────────────────────────── */
+.score-bar {
+  width: 80px;
+  height: 3px;
+  background-color: var(--bg-stone);
+  overflow: hidden;
+}
+
+.score-bar-fill {
+  height: 100%;
+  background-color: var(--navy);
+  transition: width var(--duration-slow) var(--ease);
+}
+
+/* ── Skeleton Loading ─────────────────────────────────────── */
+@keyframes skeleton-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+.skeleton {
+  background-color: var(--bg-stone);
+  animation: skeleton-pulse 1.5s ease-in-out infinite;
+}
+
+/* ── Fade In Animation ────────────────────────────────────── */
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+  animation: fade-in 200ms var(--ease) both;
+}
+
+@keyframes fade-in-up {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 300ms var(--ease) both;
+}
+
+/* ── Stagger animation delays ────────────────────────────── */
+.stagger-1  { animation-delay: 50ms; }
+.stagger-2  { animation-delay: 100ms; }
+.stagger-3  { animation-delay: 150ms; }
+.stagger-4  { animation-delay: 200ms; }
+.stagger-5  { animation-delay: 250ms; }
+
+/* ── Scrollbar ────────────────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-stone);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--platinum);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-disabled);
+}
+
+/* ── Selection ────────────────────────────────────────────── */
+::selection {
+  background-color: var(--navy-muted);
+  color: var(--navy);
+}
+
+/* ── Focus ────────────────────────────────────────────────── */
+:focus-visible {
+  outline: 2px solid var(--navy);
+  outline-offset: 2px;
+}
+
+/* ── Print ────────────────────────────────────────────────── */
+@media print {
+  :root {
+    --bg-base: white;
+  }
+}
