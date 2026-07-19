@@ -79,4 +79,12 @@ INSERT INTO instruments (symbol, name, asset_class) VALUES
 ON CONFLICT (symbol) DO NOTHING;
 
 -- ── Enable realtime on signals ────────────────────────────────
-ALTER PUBLICATION supabase_realtime ADD TABLE signals;
+DO $$
+BEGIN
+  IF NOT EXISTS (
+    SELECT 1 FROM pg_publication_tables 
+    WHERE pubname = 'supabase_realtime' AND schemaname = 'public' AND tablename = 'signals'
+  ) THEN
+    ALTER PUBLICATION supabase_realtime ADD TABLE signals;
+  END IF;
+END $$;
