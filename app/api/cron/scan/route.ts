@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { createServerClient } from '@/lib/supabase/client';
 import { ASSET_COVERAGE } from '@/lib/data/signals';
-import { v4 as uuidv4 } from 'uuid';
+// crypto.randomUUID() is built into Node 18+ — no package needed
 
 export const dynamic = 'force-dynamic';
 // Vercel limit for cron is usually longer, but let's allow maxDuration
