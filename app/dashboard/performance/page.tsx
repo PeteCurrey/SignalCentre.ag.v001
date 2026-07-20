@@ -65,7 +65,7 @@ export default async function PerformancePage() {
         }}
       >
         <p style={{ fontSize: "0.8125rem", color: "var(--text-secondary)", lineHeight: 1.65 }}>
-          <strong style={{ color: "var(--text-primary)" }}>Transparency note:</strong> Signal Center does not display win/loss rates. We track signal distribution, conviction accuracy, and AI consensus calibration. Outcome tracking requires user-defined criteria and is planned for Phase 2.
+          <strong style={{ color: "var(--text-primary)" }}>Transparency note:</strong> Signal Centre does not display win/loss rates. We track signal distribution, conviction accuracy, and AI consensus calibration. Outcome tracking requires user-defined criteria and is planned for Phase 2.
         </p>
       </div>
 

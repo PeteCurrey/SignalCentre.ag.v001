@@ -84,7 +84,7 @@ export default function SignalHubPage() {
                 lineHeight: 1.65,
                 maxWidth: 520,
               }}>
-                Active signals ranked by conviction. AI consensus across Claude, GPT, Grok and Gemini.
+                Active signals ranked by conviction. AI consensus across Claude, GPT, and Grok.
                 Realtime updates — refreshed every 60 seconds.
               </p>
             </div>

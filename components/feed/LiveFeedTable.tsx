@@ -142,6 +142,43 @@ export function LiveFeedTable({
     })
     .slice(0, maxRows);
 
+  const showingCount = isPublic ? Math.min(filtered.length, 3) : filtered.length;
+
+  if (signals.length === 0) {
+    return (
+      <div
+        style={{
+          border: "1px solid var(--border)",
+          backgroundColor: "var(--bg-warm)",
+          padding: "var(--space-12) var(--space-6)",
+          textAlign: "center",
+          animation: "fade-in 400ms ease",
+        }}
+      >
+        <h3
+          style={{
+            fontSize: "1rem",
+            fontWeight: 500,
+            color: "var(--text-primary)",
+            marginBottom: "var(--space-2)",
+          }}
+        >
+          No Active Signals
+        </h3>
+        <p
+          style={{
+            fontSize: "0.875rem",
+            color: "var(--text-secondary)",
+            fontFamily: "var(--font-mono)",
+            letterSpacing: "0.02em",
+          }}
+        >
+          Next scheduled market scan: Every 15 minutes
+        </p>
+      </div>
+    );
+  }
+
   return (
     <div>
       {/* Filters */}
@@ -225,11 +262,13 @@ export function LiveFeedTable({
             <tr>
               <th>Instrument</th>
               <th>Direction</th>
+              <th>Entry</th>
+              <th>Take Profit</th>
+              <th>Stop Loss</th>
               <th>Conviction</th>
               <th>Consensus</th>
               <th>Risk Grade</th>
               <th>Timeframe</th>
-              <th>Session</th>
               <th>Updated</th>
               <th></th>
             </tr>
@@ -291,6 +330,27 @@ export function LiveFeedTable({
                   <DirectionBadge direction={signal.direction} />
                 </td>
 
+                {/* Entry */}
+                <td>
+                  <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.8125rem", color: "var(--text-primary)" }}>
+                    {signal.entryPrice || "—"}
+                  </span>
+                </td>
+
+                {/* Take Profit */}
+                <td>
+                  <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.8125rem", color: "var(--green)" }}>
+                    {signal.takeProfit1 || "—"}
+                  </span>
+                </td>
+
+                {/* Stop Loss */}
+                <td>
+                  <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.8125rem", color: "var(--burgundy)" }}>
+                    {signal.stopLoss || "—"}
+                  </span>
+                </td>
+
                 {/* Conviction */}
                 <td>
                   {isPublic && i >= 3 ? (
@@ -342,18 +402,6 @@ export function LiveFeedTable({
                     }}
                   >
                     {signal.timeframe}
-                  </span>
-                </td>
-
-                {/* Session */}
-                <td>
-                  <span
-                    style={{
-                      fontSize: "0.8125rem",
-                      color: "var(--text-muted)",
-                    }}
-                  >
-                    {signal.sessionContext}
                   </span>
                 </td>
 
@@ -423,7 +471,7 @@ export function LiveFeedTable({
               color: "var(--text-muted)",
             }}
           >
-            Showing 3 of {signals.length} active signals. Full access requires an account.
+            Showing {showingCount} of {signals.length} active signals. Full access requires an account.
           </span>
           <Link
             href="/sign-up"

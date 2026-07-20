@@ -3,7 +3,7 @@ import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "Request Access",
-  description: "Create your Signal Center account.",
+  description: "Create your Signal Centre account.",
 };
 
 export default function SignUpPage() {

@@ -8,8 +8,8 @@ const hasClerkKeys =
 
 export const metadata: Metadata = {
   title: {
-    default: "Signal Center — Institutional Market Intelligence",
-    template: "%s | Signal Center",
+    default: "Signal Centre — Institutional Market Intelligence",
+    template: "%s | Signal Centre",
   },
   description:
     "Professional market intelligence platform providing AI consensus analysis, signal scoring, and decision-support infrastructure for Forex, Indices, Commodities and Crypto.",
@@ -24,24 +24,24 @@ export const metadata: Metadata = {
     "commodities",
     "crypto analysis",
   ],
-  authors: [{ name: "Signal Center" }],
-  creator: "Signal Center",
-  publisher: "Signal Center",
+  authors: [{ name: "Signal Centre" }],
+  creator: "Signal Centre",
+  publisher: "Signal Centre",
   metadataBase: new URL(
-    process.env.NEXT_PUBLIC_APP_URL || "https://signalcenter.co.uk"
+    process.env.NEXT_PUBLIC_APP_URL || "https://signalcentre.co.uk"
   ),
   openGraph: {
     type: "website",
     locale: "en_GB",
-    url: "https://signalcenter.co.uk",
-    siteName: "Signal Center",
-    title: "Signal Center — Institutional Market Intelligence",
+    url: "https://signalcentre.co.uk",
+    siteName: "Signal Centre",
+    title: "Signal Centre — Institutional Market Intelligence",
     description:
       "Multi-source market intelligence and AI consensus analysis for professional traders and proprietary desks.",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Signal Center — Institutional Market Intelligence",
+    title: "Signal Centre — Institutional Market Intelligence",
     description:
       "Multi-source market intelligence and AI consensus analysis for professional traders and proprietary desks.",
   },

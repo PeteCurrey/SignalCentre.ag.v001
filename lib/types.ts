@@ -23,6 +23,10 @@ export interface Signal {
   price?: number;
   priceChange?: number;
   priceChangePct?: number;
+  entryPrice?: number | string;
+  stopLoss?: number | string;
+  takeProfit1?: number | string;
+  takeProfit2?: number | string;
 }
 
 export interface ConfluenceMatrix {

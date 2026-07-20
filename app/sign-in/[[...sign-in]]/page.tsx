@@ -3,7 +3,7 @@ import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "Sign In",
-  description: "Sign in to your Signal Center account.",
+  description: "Sign in to your Signal Centre account.",
 };
 
 export default function SignInPage() {

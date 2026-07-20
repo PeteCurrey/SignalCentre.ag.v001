@@ -4,7 +4,7 @@ import { Footer } from "@/components/layout/Footer";
 
 export const metadata: Metadata = {
   title: "Methodology",
-  description: "How Signal Center calculates conviction scores, consensus scores, and risk grades. Full methodology documentation.",
+  description: "How Signal Centre calculates conviction scores, consensus scores, and risk grades. Full methodology documentation.",
 };
 
 const SCORING_FACTORS = [
@@ -22,7 +22,7 @@ const SCORING_FACTORS = [
     category: "AI Consensus Signals",
     weight: 25,
     factors: [
-      { name: "Model Agreement Score", description: "Percentage of AI models in directional agreement. Four models: Claude, GPT-4, Grok, Gemini.", weight: 15 },
+      { name: "Model Agreement Score", description: "Percentage of AI models in directional agreement. Three models: Claude, GPT-4, Grok.", weight: 15 },
       { name: "Confidence Weighted Average", description: "Each model's stated confidence level, weighted and averaged to produce the Consensus Score.", weight: 10 },
     ],
   },
@@ -55,7 +55,7 @@ export default function MethodologyPage() {
               Methodology
             </h1>
             <p style={{ fontSize: "1rem", color: "var(--text-secondary)", lineHeight: 1.8, marginBottom: "var(--space-12)", maxWidth: "580px" }}>
-              The Signal Center scoring system is deterministic, documented and versioned. This page explains every factor that contributes to a signal's Conviction Score, Consensus Score, and Risk Grade.
+              The Signal Centre scoring system is deterministic, documented and versioned. This page explains every factor that contributes to a signal's Conviction Score, Consensus Score, and Risk Grade.
             </p>
 
             {/* Version note */}
@@ -72,7 +72,7 @@ export default function MethodologyPage() {
             >
               <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.8125rem", color: "var(--navy)", fontWeight: 600 }}>v1.0.0</span>
               <span style={{ width: "1px", height: "16px", backgroundColor: "var(--border)" }} />
-              <span style={{ fontSize: "0.8125rem", color: "var(--text-muted)" }}>Effective from: June 2026</span>
+              <span style={{ fontSize: "0.8125rem", color: "var(--text-muted)" }}>Effective from: 20 July 2026</span>
               <span style={{ width: "1px", height: "16px", backgroundColor: "var(--border)" }} />
               <span style={{ fontSize: "0.8125rem", color: "var(--text-muted)" }}>Changes will be published with version increments.</span>
             </div>
@@ -87,7 +87,7 @@ export default function MethodologyPage() {
               <div style={{ border: "1px solid var(--border)" }}>
                 {[
                   { metric: "Conviction Score", range: "0–100", description: "Aggregated signal strength across all technical and contextual factors. A score of 70+ is classified as High Conviction." },
-                  { metric: "Consensus Score", range: "0–100", description: "AI model agreement level. Reflects the degree to which Claude, GPT-4, Grok and Gemini agree on direction and strength." },
+                  { metric: "Consensus Score", range: "0–100", description: "AI model agreement level. Reflects the degree to which Claude, GPT-4, and Grok agree on direction and strength." },
                   { metric: "Risk Grade", range: "A+ / A / B / C / D", description: "Normalised risk assessment based on ATR, volatility regime, macro context and AI risk flags. A+ represents cleanest risk/reward profile." },
                 ].map((item) => (
                   <div
@@ -160,7 +160,7 @@ export default function MethodologyPage() {
             <div id="consensus" style={{ borderTop: "1px solid var(--border)", paddingTop: "var(--space-10)", marginBottom: "var(--space-12)" }}>
               <h2 style={{ fontSize: "1.125rem", fontWeight: 500, color: "var(--text-primary)", marginBottom: "var(--space-2)" }}>AI Consensus Engine</h2>
               <p style={{ fontSize: "0.9375rem", color: "var(--text-secondary)", lineHeight: 1.8, marginBottom: "var(--space-6)" }}>
-                Four language models are queried independently with structured market data. Each model is assigned a specific analytical role to prevent echo-chamber responses.
+                Three language models are queried independently with structured market data. Each model is assigned a specific analytical role to prevent echo-chamber responses.
               </p>
               <p style={{ fontSize: "0.9375rem", color: "var(--text-secondary)", lineHeight: 1.8 }}>
                 Models receive: instrument name, current price, timeframe, RSI, MACD, EMA stack, ATR, recent news headlines, and the outputs of the technical scoring pipeline. They do not receive each other's outputs before responding.
@@ -210,6 +210,43 @@ export default function MethodologyPage() {
                   </div>
                 ))}
               </div>
+            </div>
+            <div id="data-sources" style={{ borderTop: "1px solid var(--border)", paddingTop: "var(--space-10)", marginBottom: "var(--space-12)", marginTop: "var(--space-12)" }}>
+              <h2 style={{ fontSize: "1.125rem", fontWeight: 500, color: "var(--text-primary)", marginBottom: "var(--space-2)" }}>Data Sources & Providers</h2>
+              <p style={{ fontSize: "0.9375rem", color: "var(--text-secondary)", lineHeight: 1.8, marginBottom: "var(--space-4)" }}>
+                Signal Centre relies on institutional-grade data providers. Data integrity is foundational to the Conviction Score pipeline.
+              </p>
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "var(--space-8)" }}>
+                <div>
+                  <h3 style={{ fontSize: "0.875rem", fontWeight: 600, color: "var(--text-primary)", marginBottom: "var(--space-3)" }}>Current Integration</h3>
+                  <ul style={{ listStyle: "disc", paddingLeft: "var(--space-4)", fontSize: "0.875rem", color: "var(--text-secondary)", lineHeight: 1.8 }}>
+                    <li>Twelve Data (Price & Technicals)</li>
+                    <li>Finnhub (News & Sentiment)</li>
+                    <li>Anthropic (Claude)</li>
+                    <li>OpenAI (GPT-4)</li>
+                    <li>xAI (Grok)</li>
+                  </ul>
+                </div>
+                <div>
+                  <h3 style={{ fontSize: "0.875rem", fontWeight: 600, color: "var(--text-primary)", marginBottom: "var(--space-3)" }}>Planned Layer 2 Integration</h3>
+                  <ul style={{ listStyle: "disc", paddingLeft: "var(--space-4)", fontSize: "0.875rem", color: "var(--text-secondary)", lineHeight: 1.8 }}>
+                    <li>Autochartist</li>
+                    <li>Trading Central</li>
+                    <li>Glassnode & CryptoQuant</li>
+                    <li>Acuity Trading</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <div id="accuracy" style={{ borderTop: "1px solid var(--border)", paddingTop: "var(--space-10)" }}>
+              <h2 style={{ fontSize: "1.125rem", fontWeight: 500, color: "var(--text-primary)", marginBottom: "var(--space-2)" }}>Accuracy & Outcome Logging</h2>
+              <p style={{ fontSize: "0.9375rem", color: "var(--text-secondary)", lineHeight: 1.8, marginBottom: "var(--space-4)" }}>
+                Every signal generated by the platform is permanently logged upon reaching its take-profit, stop-loss, or timeframe expiry. This creates an immutable track record of the model's predictive accuracy.
+              </p>
+              <p style={{ fontSize: "0.9375rem", color: "var(--text-secondary)", lineHeight: 1.8 }}>
+                To review historical hit rates and model-specific performance, access the <a href="/dashboard/performance" style={{ color: "var(--navy)", textDecoration: "underline" }}>Performance Dashboard</a> (requires active session).
+              </p>
             </div>
           </div>
         </section>

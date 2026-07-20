@@ -4,7 +4,7 @@ import { DashboardSidebar } from "@/components/layout/DashboardSidebar";
 export const metadata: Metadata = {
   title: {
     default: "Dashboard",
-    template: "%s | Signal Center",
+    template: "%s | Signal Centre",
   },
 };
 

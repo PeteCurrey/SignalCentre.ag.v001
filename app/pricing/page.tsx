@@ -6,7 +6,7 @@ import { PRICING_TIERS } from "@/lib/data/signals";
 
 export const metadata: Metadata = {
   title: "Pricing",
-  description: "Straightforward subscription pricing for Signal Center. Professional £99/mo, Pro Desk £249/mo, Institutional £499/mo.",
+  description: "Straightforward subscription pricing for Signal Centre. Foundation £49/mo, Edge £149/mo, Floor £499/mo.",
 };
 
 export default function PricingPage() {

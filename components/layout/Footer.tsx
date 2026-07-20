@@ -33,11 +33,29 @@ const FOOTER_COLS = [
   },
 ];
 
-const LEGAL_NOTICE = `Signal Center provides market intelligence for informational purposes only. 
-Nothing on this platform constitutes financial advice, an invitation to trade, or a 
-recommendation to buy or sell any financial instrument. Past signal accuracy is not 
-indicative of future results. Trading financial instruments carries significant risk of 
-loss. Signal Center is not regulated by the FCA. Ensure you understand the risks involved.`;
+const LEGAL_NOTICE = `Signal Centre provides market intelligence for informational purposes only. 
+Trading financial instruments involves substantial risk and may result in the loss of your invested capital. 
+You should not invest money that you cannot afford to lose. The platform does not issue financial advice, 
+investment recommendations, or direct trading signals. You must independently evaluate the merits of any 
+potential trades and consult an independent financial advisor if you are unsure of the risks. Past 
+performance is not indicative of future results. AI consensus models can produce inaccurate outputs and 
+should not be solely relied upon. Signal Centre and its directors, employees, and affiliates accept no 
+liability for any losses or damages incurred as a result of using the platform. You alone assume the sole 
+responsibility of evaluating the merits and risks associated with the use of any information on the platform 
+before making any decisions based on such information. Over-the-counter derivatives are complex instruments 
+and come with a high risk of losing money rapidly due to leverage. Retail investor accounts often lose money 
+when trading CFDs. You should consider whether you understand how CFDs work and whether you can afford to 
+take the high risk of losing your money. Crypto assets are highly volatile and largely unregulated. There is 
+no regulatory protection for crypto asset investors and you could lose all of your money. Signal Centre does 
+not provide services to residents of the United States, Japan, Iran, Syria, North Korea, or any other 
+jurisdiction where such distribution or use would be contrary to local law or regulation. By using this 
+website, you acknowledge that you have read, understood, and agree to be bound by our Terms of Service and 
+Privacy Policy. If you do not agree, you must cease using the platform immediately. The information on this 
+site is not directed at residents of any particular country and is not intended for distribution to, or use 
+by, any person in any country or jurisdiction where such distribution or use would be contrary to local law 
+or regulation. Any reliance on the material on this site is at your own risk. The conviction scores and 
+risk grades are quantitative measures based on historical relationships and do not guarantee any specific 
+loss. Signal Centre is not regulated by the FCA. Ensure you understand the risks involved.`;
 
 export function Footer() {
   return (
@@ -181,7 +199,7 @@ export function Footer() {
                 fontFamily: "var(--font-mono)",
               }}
             >
-              © {new Date().getFullYear()} Signal Center Ltd. All rights reserved.
+              © {new Date().getFullYear()} Signal Centre Ltd. All rights reserved.
             </span>
             <span
               style={{

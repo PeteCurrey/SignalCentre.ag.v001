@@ -4,7 +4,7 @@ import { Footer } from "@/components/layout/Footer";
 
 export const metadata: Metadata = {
   title: "About",
-  description: "Signal Center — market intelligence methodology, principles and approach.",
+  description: "Signal Centre — market intelligence methodology, principles and approach.",
 };
 
 export default function AboutPage() {
@@ -12,8 +12,13 @@ export default function AboutPage() {
     <>
       <Header />
       <main>
+        {/* Header */}
         <section
-          style={{ padding: "var(--space-20) 0 var(--space-16)", borderBottom: "1px solid var(--border)" }}
+          style={{
+            padding: "var(--space-20) 0 var(--space-16)",
+            borderBottom: "1px solid var(--border)",
+            backgroundColor: "var(--bg-warm)",
+          }}
         >
           <div className="container-narrow">
             <h1
@@ -22,12 +27,33 @@ export default function AboutPage() {
                 fontWeight: 500,
                 color: "var(--text-primary)",
                 letterSpacing: "-0.02em",
-                marginBottom: "var(--space-10)",
+                marginBottom: "var(--space-4)",
               }}
             >
-              About Signal Center
+              About Signal Centre
             </h1>
+            <p
+              style={{
+                fontSize: "1.125rem",
+                color: "var(--text-secondary)",
+                lineHeight: 1.6,
+                maxWidth: "600px",
+              }}
+            >
+              We build institutional-grade decision support infrastructure for traders who demand transparency over marketing claims.
+            </p>
+          </div>
+        </section>
 
+        {/* Mission Section */}
+        <section className="section">
+          <div className="container-narrow">
+            <div style={{ marginBottom: "var(--space-12)" }}>
+              <h2 style={{ fontSize: "1.25rem", fontWeight: 500, color: "var(--text-primary)", marginBottom: "var(--space-4)" }}>The Mission</h2>
+              <p style={{ fontSize: "1rem", color: "var(--text-secondary)", lineHeight: 1.8, marginBottom: "var(--space-6)" }}>
+                Signal Centre is a market intelligence platform built for professional traders, proprietary desks, and sophisticated retail participants who require institutional-grade analysis infrastructure.
+              </p>
+              </div>
             <div
               style={{
                 display: "grid",
@@ -41,7 +67,7 @@ export default function AboutPage() {
                   What we are
                 </h2>
                 <p style={{ fontSize: "0.9375rem", color: "var(--text-secondary)", lineHeight: 1.8, marginBottom: "var(--space-4)" }}>
-                  Signal Center is a market intelligence platform built for professional traders, proprietary desks, and sophisticated retail participants who require institutional-grade analysis infrastructure.
+                  Signal Centre is a market intelligence platform built for professional traders, proprietary desks, and sophisticated retail participants who require institutional-grade analysis infrastructure.
                 </p>
                 <p style={{ fontSize: "0.9375rem", color: "var(--text-secondary)", lineHeight: 1.8 }}>
                   We do not issue trading signals. We do not tell you what to buy or sell. We provide structured intelligence — conviction scoring, AI consensus analysis, confluence mapping, and risk context — to support your own analytical process.

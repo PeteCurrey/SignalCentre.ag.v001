@@ -42,6 +42,10 @@ export async function getActiveSignals(assetClassFilter?: string): Promise<Signa
       price: q?.price,
       priceChange: q?.change,
       priceChangePct: q?.changePct,
+      entryPrice: s.entry_price,
+      stopLoss: s.stop_loss,
+      takeProfit1: s.take_profit_1,
+      takeProfit2: s.take_profit_2,
     };
   });
 }
@@ -112,7 +116,7 @@ export const PRICING_TIERS: import("@/lib/types").PricingTier[] = [
     id: "FOUNDATION",
     name: "Foundation",
     price: 49,
-    currency: "USD",
+    currency: "GBP",
     period: "month",
     description: "Core access for individual traders.",
     features: [
@@ -126,7 +130,7 @@ export const PRICING_TIERS: import("@/lib/types").PricingTier[] = [
     id: "EDGE",
     name: "Edge",
     price: 149,
-    currency: "USD",
+    currency: "GBP",
     period: "month",
     description: "Advanced intelligence for active traders.",
     features: [
@@ -141,7 +145,7 @@ export const PRICING_TIERS: import("@/lib/types").PricingTier[] = [
     id: "FLOOR",
     name: "Floor",
     price: 499,
-    currency: "USD",
+    currency: "GBP",
     period: "month",
     description: "Institutional-grade flow and analysis.",
     features: [

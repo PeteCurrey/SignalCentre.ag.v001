@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { LiveFeedTable } from "@/components/feed/LiveFeedTable";
+import { auth } from "@clerk/nextjs/server";
 import {
   PRICING_TIERS,
   ASSET_COVERAGE,
@@ -10,15 +11,15 @@ import {
 } from "@/lib/data/signals";
 
 export const metadata: Metadata = {
-  title: "Signal Center — Institutional Market Intelligence",
+  title: "Signal Centre — Institutional Market Intelligence",
   description:
     "Multi-source market intelligence and AI consensus analysis for professional traders, proprietary desks and sophisticated investors across Forex, Indices, Commodities and Crypto.",
 };
 
 const FAQS = [
   {
-    q: "What makes Signal Center different from retail signal services?",
-    a: "Signal Center does not issue buy/sell calls. We provide structured market intelligence: conviction scores, AI consensus analysis, confluence mapping, and risk context. The product is decision-support infrastructure — not instructions. Professional traders use this to validate their own analysis and identify opportunity zones.",
+    q: "What makes Signal Centre different from retail signal services?",
+    a: "Signal Centre does not issue buy/sell calls. We provide structured market intelligence: conviction scores, AI consensus analysis, confluence mapping, and risk context. The product is decision-support infrastructure — not instructions. Professional traders use this to validate their own analysis and identify opportunity zones.",
   },
   {
     q: "How is the Conviction Score calculated?",
@@ -26,15 +27,15 @@ const FAQS = [
   },
   {
     q: "How does the AI Consensus Engine work?",
-    a: "We query four large language models (Claude, GPT-4, Grok, Gemini) with structured market data and assign each a specific analytical role — Risk Officer, Portfolio Strategist, Sentiment Analyst, Macro Analyst. We display each model's output independently, including disagreements. Transparency is a core principle.",
+    a: "We query three large language models (Claude, GPT-4, Grok) with structured market data and assign each a specific analytical role — Risk & Macro Officer, Portfolio Strategist, Sentiment Analyst. We display each model's output independently, including disagreements. Transparency is a core principle.",
   },
   {
     q: "What data sources power the platform?",
     a: "Phase 1 integrates Twelve Data and Finnhub for price data and technical indicators. Future layers include Autochartist, Trading Central, TAAPI, Acuity, and for crypto: Glassnode, CryptoQuant, CoinGlass, LunarCrush and Santiment.",
   },
   {
-    q: "Is Signal Center regulated?",
-    a: "Signal Center is not regulated by the FCA and does not provide regulated financial advice. The platform provides market intelligence for informational purposes only. Users are responsible for their own trading decisions.",
+    q: "Is Signal Centre regulated?",
+    a: "Signal Centre is not regulated by the FCA and does not provide regulated financial advice. The platform provides market intelligence for informational purposes only. Users are responsible for their own trading decisions.",
   },
   {
     q: "What is the refund policy?",
@@ -45,8 +46,8 @@ const FAQS = [
 const CONSENSUS_MODELS = [
   {
     model: "Claude",
-    role: "Risk Officer",
-    focus: "Invalidations, counter-arguments, risk parameters, and scenarios where the thesis fails.",
+    role: "Risk & Macro Officer",
+    focus: "Invalidations, counter-arguments, risk parameters, central bank policy, and scenarios where the thesis fails.",
     color: "var(--burgundy)",
   },
   {
@@ -61,18 +62,19 @@ const CONSENSUS_MODELS = [
     focus: "Narrative shifts, crowd positioning, contrarian signals, and retail sentiment data.",
     color: "var(--green)",
   },
-  {
-    model: "Gemini",
-    role: "Macro Analyst",
-    focus: "Central bank policy, bond market dynamics, economic releases, and intermarket relationships.",
-    color: "var(--amber)",
-  },
 ];
 
 export const revalidate = 0;
 
 export default async function HomePage() {
-  const signals = await getActiveSignals();
+  const { userId } = auth();
+  const rawSignals = await getActiveSignals();
+  const signals = rawSignals.map(s => 
+    !userId 
+      ? { ...s, entryPrice: "•••••", stopLoss: "•••••", takeProfit1: "•••••", takeProfit2: "•••••" } 
+      : s
+  );
+  
   return (
     <>
       <Header />
@@ -126,7 +128,7 @@ export default async function HomePage() {
                     fontFamily: "var(--font-mono)",
                   }}
                 >
-                  Live Intelligence Feed · {signals.length} instruments active
+                  Live Intelligence Feed · {new Set(signals.map(s => s.instrument)).size} instruments active
                 </span>
               </div>
 
@@ -218,7 +220,7 @@ export default async function HomePage() {
             >
               {[
                 { value: "47", label: "Instruments Monitored" },
-                { value: "4", label: "AI Models in Consensus" },
+                { value: "3", label: "AI Models in Consensus" },
                 { value: "0–100", label: "Conviction Score Range" },
                 { value: "A+ – D", label: "Risk Grade Scale" },
               ].map((stat) => (
@@ -350,7 +352,7 @@ export default async function HomePage() {
                   maxWidth: "520px",
                 }}
               >
-                Four AI models. Four distinct analytical roles. One structured
+                Three AI models. Three distinct analytical roles. One structured
                 view of agreement and disagreement.
               </p>
             </div>
@@ -358,7 +360,7 @@ export default async function HomePage() {
             <div
               style={{
                 display: "grid",
-                gridTemplateColumns: "repeat(4, 1fr)",
+                gridTemplateColumns: "repeat(3, 1fr)",
                 gap: "0",
                 borderLeft: "1px solid var(--border)",
                 borderTop: "1px solid var(--border)",
@@ -951,7 +953,7 @@ export default async function HomePage() {
                     color: "var(--text-muted)",
                   }}
                 >
-                  Start with Professional at £99/month. Cancel at any time.
+                  Start with Foundation at £49/month. Cancel at any time.
                 </p>
               </div>
               <Link
