@@ -67,7 +67,7 @@ const CONSENSUS_MODELS = [
 export const revalidate = 0;
 
 export default async function HomePage() {
-  const { userId } = auth();
+  const { userId } = await auth();
   const rawSignals = await getActiveSignals();
   const signals = rawSignals.map(s => 
     !userId 
