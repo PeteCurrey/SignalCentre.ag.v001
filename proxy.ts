@@ -8,9 +8,12 @@
 
 import { type NextRequest, NextResponse } from "next/server";
 
-const hasClerkKeys =
-  process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY?.startsWith("pk_") &&
-  process.env.CLERK_SECRET_KEY?.startsWith("sk_");
+function getHasClerkKeys() {
+  return (
+    process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY?.startsWith("pk_") &&
+    process.env.CLERK_SECRET_KEY?.startsWith("sk_")
+  );
+}
 
 // Routes that require a signed-in user
 const PROTECTED_PREFIXES = ["/dashboard", "/account", "/alerts"];
@@ -46,18 +49,20 @@ async function withClerk(req: NextRequest) {
 
 // ── Fallback path (no Clerk keys) ────────────────────────────
 function withoutClerk(req: NextRequest) {
-  // In local dev without Clerk, redirect /dashboard to sign-in
-  // so behaviour is consistent. Comment out if you want open access.
+  // In local dev without Clerk, allow open access to dashboard
+  // so the user can test the app without setting up Clerk.
+  /*
   if (isProtected(req.nextUrl.pathname)) {
     const signInUrl = new URL("/sign-in", req.url);
     signInUrl.searchParams.set("redirect_url", req.url);
     return NextResponse.redirect(signInUrl);
   }
+  */
   return NextResponse.next();
 }
 
 export async function proxy(req: NextRequest) {
-  if (hasClerkKeys) {
+  if (getHasClerkKeys()) {
     return withClerk(req);
   }
   return withoutClerk(req);
